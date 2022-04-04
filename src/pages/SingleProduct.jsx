@@ -1,15 +1,9 @@
-import React from "react";
-import productList from "../data.json";
+import React , {useEffect, useState} from "react";
 import { useParams } from "react-router-dom"
 import { Image,Button,Flex } from "@chakra-ui/react"
-
-
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-
 import cartState from "../stores/shoppingCart/atom";
 
-
-import { useState } from 'react';
 
    
 
@@ -17,8 +11,26 @@ function SingleProduct () {
 
     const params = useParams();
 
-    const product = productList.find((p) => p.id === parseInt(params.id) );
+    
+    
+    const [products, setProducts] = useState([])
 
+  const fetchData = () => {
+    fetch("https://k4backend.osuka.dev/products")
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        setProducts(data)
+      })
+      
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const product = products.find((p) => p.id === parseInt(params.id) );
 
     const [cart, setCart] = useRecoilState(cartState);
   
@@ -36,10 +48,7 @@ function SingleProduct () {
 
     console.log(handleAdd);
 
-
-    
-    
-    
+    if (product === undefined) return <div>Loading..</div>
 
     return (
      

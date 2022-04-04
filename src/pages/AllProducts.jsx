@@ -1,34 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import productList from "../data.json";
 import { Image, Box, Flex, Spacer, Button } from "@chakra-ui/react";
+import axios from "axios";
+import { useRecoilState } from "recoil";
+import { productsState } from "../stores/products/atom.js";
 
-function AllProducts() {
+
+
+const AllProducts = () => {
+  const [products, setProducts] = useRecoilState(productsState);
+
+  const fetchData = () => {
+    fetch("https://k4backend.osuka.dev/products")
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        setProducts(data)
+      })
+      
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
   return (
-    <div>
-      <Box display="flex" flexWrap="wrap" justifyContent="center" padding="5">
-        {productList.map((product) => {
-          const image = product.image;
-          const title = product.title;
-          const price = product.price;
 
-          return (
-            <Box w="25%">
-              <Image src={product.image} boxSize="200px" />
+          <Flex flexWrap="wrap">
+          {products.map(product => (
+            <Box padding={3} width="25%">
 
-              <div>{title}</div>
-              <div>{price} €</div>
-              <Button>
-                <Link to={`/SingleProduct/${product.id}`}>Go to product</Link>
-              </Button>
+            <div ><Image width="250px" key={product.image} src={product.image} /></div>
+            <div key={product.title}>{product.title}</div>
+            <div key={product.price}>{product.price}$</div>
+            
+            <Button><Link to={`/SingleProduct/${product.id}`}>Go to product</Link></Button>
             </Box>
-          );
-        })}
-      </Box>
-
-      <button>Add to cart</button>
-    </div>
-  );
+          ))}
+          
+          </Flex>
+      
+    
+  )
 }
 
+
 export default AllProducts;
+

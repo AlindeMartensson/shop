@@ -9,6 +9,10 @@ import Home from "./pages/Home"
 import AllProducts from "./pages/AllProducts"
 import Cart from "./pages/Cart"
 import SingleProduct from "./pages/SingleProduct"
+import Login from "./pages/Login"
+import Register from "./pages/Register"
+import Profile from "./pages/Profile"
+import Admin from "./pages/Admin"
 
 import cartState from "./stores/shoppingCart/atom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -28,6 +32,11 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
             <Route path="/AllProducts" element={<AllProducts />}/>
             <Route path="/CartPage" element={<Cart />}/>
             <Route path="/SingleProduct/:id" element={<SingleProduct/>}/>
+            <Route path="/Login" element={<Login/>}/>
+            <Route path="/Register" element={<Register/>} />
+            <Route path="/Profile" element={<Profile/>} />
+            <Route path="/Admin" element={<Admin/>} />
+            
         </Routes>
       
       </header>
